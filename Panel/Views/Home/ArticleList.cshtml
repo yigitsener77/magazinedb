@@ -1,0 +1,125 @@
+﻿@model BLL.Utilities.Helpers.Pagination<BLL.DTOs.Panel.ArticleListDTO>
+
+@{
+    ViewBag.Title = "ArticleList";
+}
+
+<h2>Article List</h2>
+<hr />
+<table class="table table-hover">
+    <tr>
+        <th>Status</th>
+        <th>Title</th>
+        <th>Category Name</th>
+        <th>Publish Date</th>
+        <th>Create Date</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model.CurrentData)
+    {
+        <tr class="@(item.Draft?"table-light":"") article-item" key="@item.Id">
+            <td>
+                @if (item.Draft)
+                {
+                    <i class="fa-solid fa-thumbtack-slash text-danger"></i>
+                }
+                else
+                {
+                    <i class="fa-solid fa-thumbtack text-success"></i>
+                }
+            </td>
+            <td>@item.Title</td>
+            <td>@item.CategoryName</td>
+            <td class="text-center">
+                <button class="btn btn-sm btn-publishing" type="button">
+                    @if (item.PublishDate != null)
+                    {
+                        <span>@(((DateTime)item.PublishDate).ToShortDateString())</span>
+                    }
+                    else
+                    {
+                        <span class="text-primary">
+                            <i class="fa-solid fa-thumbtack"></i>
+                            Publish
+                        </span>
+                    }
+                </button>
+            </td>
+            <td class="text-center">@item.CreateDate.ToShortDateString()</td>
+            <td>
+                <div class="btn-group w-100 btn-group-sm" role="group">
+                    <button type="button" class="btn btn-white btn-activation">
+                        @if (item.Active)
+                        {
+                            <i class="fa-regular fa-square-check text-success fa-2x" title="Deactivate"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-regular fa-square text-secondary fa-2x" title="Activate"></i>
+                        }
+                    </button>
+                    <button type="button" class="btn btn-white btn-recycling">
+                        @if (item.Deleted)
+                        {
+                            <i class="fa-solid fa-recycle fa-2x text-info" title="Recycle"></i>
+                        }
+                        else
+                        {
+                            <i class="fa-solid fa-trash-can fa-2x text-danger" title="Delete"></i>
+
+                        }
+                    </button>
+                </div>
+            </td>
+        </tr>
+    }
+</table>
+<hr />
+<nav>
+    <ul class="pagination pagination-lg justify-content-center">
+        @if (Model.CurrentPage <= 1)
+        {
+            <li class="page-item disabled">
+                <a class="page-link">&laquo;</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a href="/home/articlelist?page=@(Model.CurrentPage-1)" class="page-link">&laquo;</a>
+            </li>
+        }
+        @for (int i = Model.Start; i <= Model.End; i++)
+        {
+            if (Model.CurrentPage == i)
+            {
+                <li class="page-item active">
+                    <a class="page-link" aria-current="page">@i</a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" href="/home/articlelist?page=@i">@i</a>
+                </li>
+            }
+        }
+        @if (Model.CurrentPage >= Model.TotalPage)
+        {
+            <li class="page-item disabled">
+                <a class="page-link">&raquo;</a>
+            </li>
+        }
+        else
+        {
+            <li class="page-item">
+                <a href="/home/articlelist?page=@(Model.CurrentPage+1)" class="page-link">&raquo;</a>
+            </li>
+        }
+    </ul>
+</nav>
+
+@section Scripts {
+    <!-- Custom Page Scripts -->
+    <script src="~/assets/js/articles.js"></script>
+}

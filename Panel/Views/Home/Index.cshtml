@@ -1,0 +1,38 @@
+﻿@model Panel.Models.HomeIndexViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="row g-5">
+    <div class="col-md-4">
+        <div class="card h-100 shadow">
+            <div class="card-body">
+                <h4>Articles:</h4>
+                <p class="card-text"><strong>Published: </strong> @Model.PublishedArticlesCount</p>
+                <p class="card-text"><strong>Draft: </strong> @Model.DraftArticlesCount</p>
+                <p class="card-text"><strong>Total: </strong> @(Model.PublishedArticlesCount + Model.DraftArticlesCount)</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow">
+            <div class="card-body">
+                <h4>Category:</h4>
+                <p class="card-text">
+                    <strong>Available: </strong> @Model.CategoryCount
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 shadow">
+            <div class="card-body">
+                <h4>Tags:</h4>
+                <p class="card-text">
+                    <strong>All: </strong> @Model.TagCount
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,121 @@
+﻿@model Panel.Models.CategoriesViewModel
+
+@{
+    ViewBag.Title = "CategoryList";
+}
+
+<div class="row g-5">
+    <div class="col-md-6">
+        <h2>Category Form:</h2>
+        <hr />
+        <form method="post">
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="Name" name="Name" placeholder="Name" required>
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <button id="btn-form" type="submit" class="btn btn-outline-dark">Add Category</button>
+            <button id="btn-reset" type="reset" class="btn btn-secondary">Reset Form</button>
+        </form>
+    </div>
+    <div class="col-md-6">
+        <h2>CategoryList</h2>
+        <hr />
+        <table class="table">
+            <tr>
+                <th>Name</th>
+                <th>Articles</th>
+                <th>CreateDate</th>
+                <th></th>
+            </tr>
+            @foreach (var item in Model.CategoryPages.CurrentData)
+            {
+                <tr class="category-item" key="@item.Id">
+                    <td>@item.Name</td>
+                    <td>@item.ArticleCount</td>
+                    <td>@item.CreateDate.ToShortDateString()</td>
+                    <td>
+                        <div class="btn-group w-100 btn-group-sm" role="group">
+                            <button type="button" class="btn btn-white btn-edit">
+                                <i class="fa-solid fa-pen text-primary fa-2x" title="Edit"></i>
+                            </button>
+                            <button type="button" class="btn btn-white btn-activation">
+                                @if (item.Active)
+                                {
+                                    <i class="fa-regular fa-square-check text-success fa-2x" title="Deactivate"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-regular fa-square text-secondary fa-2x" title="Activate"></i>
+                                }
+                            </button>
+                            <button type="button" class="btn btn-white btn-recycling">
+                                @if (item.Deleted)
+                                {
+                                    <i class="fa-solid fa-recycle fa-2x text-info" title="Recycle"></i>
+                                }
+                                else
+                                {
+                                    <i class="fa-solid fa-trash-can fa-2x text-danger" title="Delete"></i>
+                                }
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+        <hr />
+        <nav>
+            <ul class="pagination pagination-lg justify-content-center">
+                @if (Model.CategoryPages.CurrentPage <= 1)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">&laquo;</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="/home/categorylist?page=@(Model.CategoryPages.CurrentPage-1)">&laquo;</a>
+                    </li>
+                }
+
+                @for (int i = Model.CategoryPages.Start; i <= Model.CategoryPages.End; i++)
+                {
+                    if (Model.CategoryPages.CurrentPage == i)
+                    {
+                        <li class="page-item active">
+                            <a class="page-link" aria-current="page">@i</a>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="/home/categorylist?page=@i">@i</a>
+                        </li>
+                    }
+                }
+
+                @if (Model.CategoryPages.CurrentPage >= Model.CategoryPages.TotalPage)
+                {
+                    <li class="page-item disabled">
+                        <a class="page-link">&raquo;</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="/home/categorylist?page=@(Model.CategoryPages.CurrentPage+1)">&raquo;</a>
+                    </li>
+                }
+
+            </ul>
+        </nav>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Custom Page Scripts -->
+    <script src="~/assets/js/categories.js"></script>
+}

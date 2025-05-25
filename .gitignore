@@ -1,0 +1,12 @@
+# Visual Studio derleme çýktý klasörleri
+bin/
+obj/
+
+# Visual Studio dosyalarý
+.vs/
+
+# Kullanýcý ayar dosyalarý
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
